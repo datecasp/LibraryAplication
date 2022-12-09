@@ -43,12 +43,12 @@ namespace LibraryApplication.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add(CategoryAddDto categoryDto)
+        public IActionResult Add(CategoryAddDto categoryDto)
         {
             if (!ModelState.IsValid) return BadRequest();
 
             var category = _mapper.Map<Category>(categoryDto);
-            var categoryResult = await _categoryService.Add(category);
+            var categoryResult = _categoryService.Add(category);
 
             if (categoryResult == null) return BadRequest();
 

@@ -11,7 +11,7 @@ namespace LibraryApplication.Domain.Interfaces
     {
         Task<ICollection<User>> GetAll();
         Task<User> GetById(int id);
-        Task<User> Add(User user);
+        User Add(User user);
         Task<User> Update(User user);
         Task<bool> Remove(User user);
     }

@@ -12,8 +12,8 @@ export class BookService {
 
   constructor(private http: HttpClient) { }
 
-  public addBook(book: Book) {
-    return this.http.post(this.baseUrl + 'books', book);
+  public async addBook(book: Book) {
+    return await this.http.post(this.baseUrl + 'books', book);
   }
 
   public updateBook(id: number, book: Book) {

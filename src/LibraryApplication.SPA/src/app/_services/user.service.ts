@@ -13,11 +13,11 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   public addUser(user: User) {
-    return this.http.post(this.baseUrl + 'Users', user);
+    return this.http.post(this.baseUrl + 'users', user);
   }
 
   public updateUser(id: number, user: User) {
-    return this.http.put(this.baseUrl + 'User/' + id, user);
+    return this.http.put(this.baseUrl + 'users/' + id, user);
   }
 
   public getUsers(): Observable<User[]> {
@@ -25,7 +25,7 @@ export class UserService {
   }
 
   public deleteUser(id: number) {
-    return this.http.delete(this.baseUrl + 'User/' + id);
+    return this.http.delete(this.baseUrl + 'users/' + id);
   }
 
   public getUserById(id: number): Observable<User> {

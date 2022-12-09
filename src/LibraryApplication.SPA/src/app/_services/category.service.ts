@@ -13,7 +13,7 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
   public addCategory(category: Category) {
-    return this.http.post(this.baseUrl + 'Categories', category);
+    return this.http.post(this.baseUrl + 'categories', category);
   }
 
   public updateCategory(id: number, category: Category) {

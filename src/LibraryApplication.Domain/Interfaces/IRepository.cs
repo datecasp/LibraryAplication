@@ -16,6 +16,5 @@ namespace LibraryApplication.Domain.Interfaces
         Task Update(TEntity entity);
         Task Remove(TEntity entity);
         Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> predicate);
-        Task<int> SaveChanges();
     }
 }

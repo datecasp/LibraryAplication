@@ -43,12 +43,12 @@ namespace LibraryApplication.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add(BookAddDto bookDto)
+        public IActionResult Add(BookAddDto bookDto)
         {
             if (!ModelState.IsValid) return BadRequest();
 
             var book = _mapper.Map<Book>(bookDto);
-            var bookResult = await _bookService.Add(book);
+            var bookResult = _bookService.Add(book);
 
             if (bookResult == null) return BadRequest();
 

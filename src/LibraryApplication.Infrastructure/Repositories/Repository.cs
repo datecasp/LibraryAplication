@@ -2,6 +2,7 @@
 using LibraryApplication.Domain.Models;
 using LibraryApplication.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +26,9 @@ namespace LibraryApplication.Infrastructure.Repositories
 
         public async Task<TEntity> Add(TEntity entity)
         {
-            var result = await DbSet.AddAsync(entity);
-            return result as TEntity;
+            DbSet.AddAsync(entity);
+            Db.SaveChanges();
+            return entity;
         }
 
         public async Task<ICollection<TEntity>> GetAll()
@@ -36,24 +38,13 @@ namespace LibraryApplication.Infrastructure.Repositories
 
         public async Task<TEntity> GetById(int id)
         {
-            var result = await DbSet.FindAsync(id);
-
-            if (result == null)
-            {
-                return null;
-            }
-
-            return result;
+            return await DbSet.FindAsync(id);
         }
 
-        public Task Remove(TEntity entity)
+        public async Task Remove(TEntity entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> SaveChanges()
-        {
-            throw new NotImplementedException();
+            DbSet.Remove(entity);
+            await SaveChanges();
         }
 
         public async Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> predicate)
@@ -61,14 +52,20 @@ namespace LibraryApplication.Infrastructure.Repositories
             return await DbSet.AsNoTracking().Where(predicate).ToListAsync();
         }
 
-        public Task Update(TEntity entity)
+        public async Task Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            DbSet.Update(entity);
+            await SaveChanges();
+        }
+
+        public async Task<int> SaveChanges()
+        {
+            return await Db.SaveChangesAsync();
         }
 
         public void Dispose()
         {
-            //TODO
+            Db?.Dispose();
         }
 
     }

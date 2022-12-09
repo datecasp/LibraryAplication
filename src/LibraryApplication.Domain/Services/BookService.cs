@@ -27,12 +27,12 @@ namespace LibraryApplication.Domain.Services
             return await _bookRepository.GetById(id);
         }
 
-        public async Task<Book> Add(Book book)
+        public Book Add(Book book)
         {
             if (_bookRepository.Search(b => b.Title == book.Title).Result.Any())
                 return null;
 
-            await _bookRepository.Add(book);
+            _bookRepository.Add(book);
             return book;
         }
 

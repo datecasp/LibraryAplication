@@ -27,12 +27,12 @@ namespace LibraryApplication.Domain.Services
             return await _userRepository.GetById(id);
         }
 
-        public async Task<User> Add(User User)
+        public User Add(User User)
         {
             if (_userRepository.Search(b => b.UserName == User.UserName).Result.Any())
                 return null;
 
-            await _userRepository.Add(User);
+            _userRepository.Add(User);
             return User;
         }
 
