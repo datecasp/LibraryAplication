@@ -10,7 +10,7 @@ namespace LibraryApplication.Domain.Interfaces
 {
     public interface IRepository<TEntity> : IDisposable where TEntity : Entity
     {
-        Task Add(TEntity entity);
+        Task<TEntity> Add(TEntity entity);
         Task<ICollection<TEntity>> GetAll();
         Task<TEntity> GetById(int id);
         Task Update(TEntity entity);

@@ -23,9 +23,10 @@ namespace LibraryApplication.Infrastructure.Repositories
             DbSet = db.Set<TEntity>();
         }
 
-        public Task Add(TEntity entity)
+        public async Task<TEntity> Add(TEntity entity)
         {
-            throw new NotImplementedException();
+            var result = await DbSet.AddAsync(entity);
+            return result as TEntity;
         }
 
         public async Task<ICollection<TEntity>> GetAll()
@@ -55,9 +56,9 @@ namespace LibraryApplication.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await DbSet.AsNoTracking().Where(predicate).ToListAsync();
         }
 
         public Task Update(TEntity entity)
