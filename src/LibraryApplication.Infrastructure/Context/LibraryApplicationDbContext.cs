@@ -19,5 +19,10 @@ namespace LibraryApplication.Infrastructure.Context
         {
             DbSeeder.Seed(builder);
         }
+
+        internal void SaveBookCategoryChanges()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

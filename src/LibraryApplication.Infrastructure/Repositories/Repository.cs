@@ -38,12 +38,31 @@ namespace LibraryApplication.Infrastructure.Repositories
 
         public async Task<TEntity> GetById(int id)
         {
-            return await DbSet.FindAsync(id);
+            var libro = await DbSet.FindAsync(id);
+
+            if (libro == null)
+            {
+                return null;
+            }
+
+            return libro;
+        }
+
+        public async Task Update(TEntity entity)
+        {
+            if (EntityExists(entity)) 
+            {
+                DbSet.Update(entity);
+            }
+            await SaveChanges();
         }
 
         public async Task Remove(TEntity entity)
         {
-            DbSet.Remove(entity);
+            if (EntityExists(entity))
+            {
+                DbSet.Remove(entity);
+            }
             await SaveChanges();
         }
 
@@ -52,15 +71,14 @@ namespace LibraryApplication.Infrastructure.Repositories
             return await DbSet.AsNoTracking().Where(predicate).ToListAsync();
         }
 
-        public async Task Update(TEntity entity)
-        {
-            DbSet.Update(entity);
-            await SaveChanges();
-        }
-
         public async Task<int> SaveChanges()
         {
             return await Db.SaveChangesAsync();
+        }
+
+        private bool EntityExists(TEntity entity) 
+        {
+            return DbSet.Any(e => e.Id == entity.Id);
         }
 
         public void Dispose()

@@ -12,5 +12,6 @@ namespace LibraryApplication.Infrastructure.Repositories
     public class BookRepository : Repository<Book>, IBookRepository
     {
         public BookRepository(LibraryApplicationDbContext context) : base(context) { }
+
     }
 }

@@ -14,10 +14,12 @@ namespace LibraryApplication.API.Configuration
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IBookCategoryRepository, BookCategoryRepository>();
 
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBookCategoryService, BookCategoryService>();
 
             return services;
         }
