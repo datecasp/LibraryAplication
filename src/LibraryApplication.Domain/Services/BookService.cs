@@ -36,13 +36,15 @@ namespace LibraryApplication.Domain.Services
             return book;
         }
 
-        public async Task<Book> Update(Book book)
+        public async Task<bool> Update(Book book)
         {
-            if (_bookRepository.Search(b => b.Title == book.Title && b.Id != book.Id).Result.Any())
-                return null;
+            bool result = await _bookRepository.Update(book);
 
-            await _bookRepository.Update(book);
-            return book;
+            if (result)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> Remove(Book book)

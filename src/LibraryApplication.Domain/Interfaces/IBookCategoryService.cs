@@ -9,9 +9,9 @@ namespace LibraryApplication.Domain.Interfaces
 {
     public interface IBookCategoryService
     {
-        Task<BookCategory> AddCategoryToBook(int bookId, int categoryId);
+        Task<bool> AddCategoryToBook(int bookId, int categoryId);
 
-        Task DeleteCategoryFromBook(int bookId, int categoryId);
+        Task<bool> DeleteCategoryFromBook(int bookId, int categoryId);
 
     }
 }

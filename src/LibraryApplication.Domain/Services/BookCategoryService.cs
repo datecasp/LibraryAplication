@@ -11,14 +11,29 @@ namespace LibraryApplication.Domain.Services
     public class BookCategoryService : IBookCategoryService
     {
         private readonly IBookCategoryRepository _bookCategoryRepository;
+        private readonly IBookRepository _bookRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public BookCategoryService(IBookCategoryRepository bookCategoryRepository)
+        public BookCategoryService(IBookCategoryRepository bookCategoryRepository, IBookRepository bookRepository, ICategoryRepository catRepository)
         {
             _bookCategoryRepository = bookCategoryRepository;
+            _bookRepository = bookRepository;
+            _categoryRepository = catRepository;
         }
 
-        public async Task<BookCategory> AddCategoryToBook(int bookId, int categoryId)
+        public async Task<bool> AddCategoryToBook(int bookId, int categoryId)
         {
+            // Check if relation exists previously
+            bool bookCategoryList = _bookCategoryRepository.Search(bc => bc.BookId == bookId && bc.CategoryId == categoryId).Result.Any();
+            // Check if book and category exists
+            bool bookExists = _bookRepository.Search(b => b.Id == bookId).Result.Any();
+            bool catExists = _categoryRepository.Search(c => c.Id == categoryId).Result.Any();
+
+            if (bookCategoryList || !bookExists || !catExists)
+            {
+                return false;
+            }
+
             BookCategory bc = new()
             {
                 BookId = bookId,
@@ -26,21 +41,21 @@ namespace LibraryApplication.Domain.Services
             };
 
             await _bookCategoryRepository.AddCategoryToBook(bc);
-            return await _bookCategoryRepository.GetById(bc.BookId);
+            return true;
         }
 
-        public Task DeleteCategoryFromBook(int bookId, int categoryId)
+        public async Task<bool> DeleteCategoryFromBook(int bookId, int categoryId)
         {
             var bookCategoryList = _bookCategoryRepository.Search(bc => bc.BookId == bookId && bc.CategoryId == categoryId).Result;
             if (!bookCategoryList.Any())
             {
-                return null;
+                return false;
             }
             foreach (BookCategory bookCategory in bookCategoryList)
             {
-                _bookCategoryRepository.DeleteCategoryFromBook(bookCategory);
+                await _bookCategoryRepository.DeleteCategoryFromBook(bookCategory);
             }
-            return Task.CompletedTask;
+            return true;
         }
     }
 }

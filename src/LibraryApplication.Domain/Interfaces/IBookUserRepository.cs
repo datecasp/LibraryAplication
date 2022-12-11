@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace LibraryApplication.Domain.Interfaces
 {
-    public interface IUserService
+    public interface IBookUserRepository : IRepository<BookUser>
     {
-        Task<ICollection<User>> GetAll();
-        Task<User> GetById(int id);
-        User Add(User user);
-        Task<bool> Update(User user);
-        Task<bool> Remove(User user);
+        Task AddActualUserToBook(BookUser bu);
+
+        Task RemoveActualUserFromBook(BookUser bu);
+
     }
 }

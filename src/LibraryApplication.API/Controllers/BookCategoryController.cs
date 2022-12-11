@@ -18,14 +18,14 @@ namespace LibraryApplication.API.Controllers
         [HttpPost("Add Category to Book/Book/{bookId:int}/categoryId/{categoryId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult AddCategoryToBook(int bookId, int categoryId)
+        public async Task<IActionResult> AddCategoryToBook(int bookId, int categoryId)
         {
             if (!ModelState.IsValid) return BadRequest();
 
             
-            var result = _bookCategoryService.AddCategoryToBook(bookId, categoryId);
+            var result = await _bookCategoryService.AddCategoryToBook(bookId, categoryId);
 
-            if (result == null) return BadRequest();
+            if (!result) return BadRequest($"ERROR. Check CategoryId {categoryId} and BookId {bookId}");
 
             return Ok($"Category {categoryId} added to book {bookId}");
         }
@@ -33,15 +33,14 @@ namespace LibraryApplication.API.Controllers
         [HttpDelete("Remove Category from Book/Book/{bookId:int}/categoryId/{categoryId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult DeleteCategoryFromBook(int bookId, int categoryId) 
+        public async Task<IActionResult> DeleteCategoryFromBook(int bookId, int categoryId) 
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var result = _bookCategoryService.DeleteCategoryFromBook(bookId, categoryId);
-            if (result == null)
-            { 
-                return BadRequest();
-            }
+            var result = await _bookCategoryService.DeleteCategoryFromBook(bookId, categoryId);
+
+            if (!result) return BadRequest($"ERROR. Check CategoryId {categoryId} and BookId {bookId}");
+
             return Ok($"Category {categoryId} removed from book {bookId}");
         }
     }
