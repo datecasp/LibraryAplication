@@ -23,7 +23,9 @@ namespace LibraryApplication.API.Controllers
 
             var result = await _bookUserService.AddActualUserToBook(bookId, userId);
 
-            if (!result) return BadRequest($"ERROR. Check parameters for bookId and userId");
+            var result = _bookUserService.AddActualUserToBook(bookId, userId);
+
+            if (result == null) return BadRequest();
 
             return Ok($"User {userId} gets book {bookId}");
         }
