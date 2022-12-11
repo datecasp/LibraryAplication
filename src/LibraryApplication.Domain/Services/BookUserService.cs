@@ -11,38 +11,49 @@ namespace LibraryApplication.Domain.Services
     public class BookUserService : IBookUserService
     {
         private readonly IBookUserRepository _bookUserRepository;
+        private readonly IUserRepository _userRepository;
 
-        public BookUserService(IBookUserRepository bookUserRepository)
+        public BookUserService(IBookUserRepository bookUserRepository, IUserRepository userRepository)
         {
             _bookUserRepository = bookUserRepository;
+            _userRepository = userRepository;
         }
 
-        public Task AddActualUserToBook(int bookId, int userId)
+        public async Task<bool> AddActualUserToBook(int bookId, int userId)
         {
-            BookUser bu = new()
+            bool userIsActive = _userRepository.Search(u => u.Id == userId && u.IsActive).Result.Any();
+            bool bookIsNotAvaliable = _bookUserRepository.Search(bu => bu.BookId == bookId && bu.ActualUser).Result.Any();
+                       
+            if (userIsActive && !bookIsNotAvaliable) 
             {
-                BookId = bookId,
-                UserId = userId,
-                ActualUser = true
-            };
+                BookUser bu = new()
+                {
+                    BookId = bookId,
+                    UserId = userId,
+                    ActualUser = true
+                };
 
-            _bookUserRepository.AddActualUserToBook(bu);
-            return Task.CompletedTask;
+                _bookUserRepository.AddActualUserToBook(bu);
+                
+                return true;
+            }
+            
+            return false;
         }
 
-        public Task RemoveActualUserFromBook(int bookId, int userId)
+        public async Task<bool> RemoveActualUserFromBook(int bookId, int userId)
         {
-            var bookUserList = _bookUserRepository.Search(bc => bc.BookId == bookId && bc.UserId == userId).Result;
+            var bookUserList = _bookUserRepository.Search(bc => bc.BookId == bookId && bc.UserId == userId && bc.ActualUser).Result;
             if (!bookUserList.Any())
             {
-                return null;
+                return false;
             }
             foreach (BookUser bookUser in bookUserList)
             {
                 bookUser.ActualUser = false;
                 _bookUserRepository.RemoveActualUserFromBook(bookUser);
             }
-            return Task.CompletedTask;
+            return true;
         }
     }
 }

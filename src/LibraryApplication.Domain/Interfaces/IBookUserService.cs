@@ -9,8 +9,8 @@ namespace LibraryApplication.Domain.Interfaces
 {
     public interface IBookUserService
     {
-        Task AddActualUserToBook(int bookId, int userId);
+        Task<bool> AddActualUserToBook(int bookId, int userId);
 
-        Task RemoveActualUserFromBook(int bookId, int userId);
+        Task<bool> RemoveActualUserFromBook(int bookId, int userId);
     }
 }

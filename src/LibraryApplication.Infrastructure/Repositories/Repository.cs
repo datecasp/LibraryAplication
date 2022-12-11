@@ -78,7 +78,7 @@ namespace LibraryApplication.Infrastructure.Repositories
             return await Db.SaveChangesAsync();
         }
 
-        private bool EntityExists(TEntity entity) 
+        public bool EntityExists(TEntity entity) 
         {
             return DbSet.Any(e => e.Id == entity.Id);
         }

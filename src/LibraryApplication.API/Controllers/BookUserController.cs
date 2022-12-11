@@ -17,14 +17,13 @@ namespace LibraryApplication.API.Controllers
         [HttpPost("User gets Book/Book/{bookId:int}/userId/{userId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult AddActualUserToBook(int bookId, int userId)
+        public async Task<IActionResult> AddActualUserToBook(int bookId, int userId)
         {
             if (!ModelState.IsValid) return BadRequest();
 
+            var result = await _bookUserService.AddActualUserToBook(bookId, userId);
 
-            var result = _bookUserService.AddActualUserToBook(bookId, userId);
-
-            if (result == null) return BadRequest();
+            if (!result) return BadRequest($"ERROR. Check parameters for bookId and userId");
 
             return Ok($"User {userId} gets book {bookId}");
         }
@@ -32,15 +31,14 @@ namespace LibraryApplication.API.Controllers
         [HttpDelete("User returns Book/Book/{bookId:int}/userId/{userId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult RemoveActualUserFromBook(int bookId, int userId)
+        public async Task<IActionResult> RemoveActualUserFromBook(int bookId, int userId)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var result = _bookUserService.RemoveActualUserFromBook(bookId, userId);
-            if (result == null)
-            {
-                return BadRequest();
-            }
+            var result = await _bookUserService.RemoveActualUserFromBook(bookId, userId);
+            
+            if (!result) return BadRequest("ERROR. Check parameters for bookId and userId");
+
             return Ok($"User {userId} returns book {bookId}");
         }
     }
