@@ -84,7 +84,7 @@ namespace LibraryApplication.API.Controllers
 
             await _bookService.Remove(book);
 
-            return Ok();
+            return Ok($"Book {id} removed");
         }
     }
 }

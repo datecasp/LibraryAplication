@@ -87,7 +87,7 @@ namespace LibraryApplication.API.Controllers
 
             if (!result) return BadRequest();
 
-            return Ok();
+            return Ok($"Category {id} removed");
         }
     }
 }
