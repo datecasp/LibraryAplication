@@ -1,4 +1,5 @@
 ﻿using LibraryApplication.Domain.Interfaces;
+using LibraryApplication.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryApplication.API.Controllers
@@ -23,9 +24,7 @@ namespace LibraryApplication.API.Controllers
 
             var result = await _bookUserService.AddActualUserToBook(bookId, userId);
 
-            var result = _bookUserService.AddActualUserToBook(bookId, userId);
-
-            if (result == null) return BadRequest();
+            if (!result) return BadRequest($"ERROR. Check CategoryId {userId} and BookId {bookId}");
 
             return Ok($"User {userId} gets book {bookId}");
         }
@@ -38,8 +37,8 @@ namespace LibraryApplication.API.Controllers
             if (!ModelState.IsValid) return BadRequest();
 
             var result = await _bookUserService.RemoveActualUserFromBook(bookId, userId);
-            
-            if (!result) return BadRequest("ERROR. Check parameters for bookId and userId");
+
+            if (!result) return BadRequest($"ERROR. Check CategoryId {userId} and BookId {bookId}");
 
             return Ok($"User {userId} returns book {bookId}");
         }
