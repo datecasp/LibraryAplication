@@ -29,11 +29,11 @@ namespace LibraryApplication.Infrastructure.Repositories
             return Task.CompletedTask;
         }
 
-        public async Task<ICollection<int>> GetBooksIdOfUser(int userId)
+        public async Task<ICollection<int>> GetBooksIdOfUser(int userId, bool actualUser)
         {
-            var booksOfUser = Search(bc => bc.UserId == userId && bc.ActualUser).Result;
+            var booksOfUserList = Search(bc => bc.UserId == userId && bc.ActualUser == actualUser).Result;
             List<int> result = new List<int>();
-            foreach (var bc in booksOfUser)
+            foreach (var bc in booksOfUserList)
             {
                 result.Add(bc.BookId);
             }
@@ -41,5 +41,16 @@ namespace LibraryApplication.Infrastructure.Repositories
             return result;
         }
 
+        public async Task<ICollection<int>> GetUsersIdOfBook(int bookId, bool actualUser)
+        {
+            var usersOfBookList = Search(bc => bc.BookId == bookId && bc.ActualUser == actualUser).Result;
+            List<int> result = new List<int>();
+            foreach (var bc in usersOfBookList)
+            {
+                result.Add(bc.UserId);
+            }
+
+            return result;
+        }
     }
 }

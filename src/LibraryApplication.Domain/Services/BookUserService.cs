@@ -58,9 +58,9 @@ namespace LibraryApplication.Domain.Services
             return true;
         }
 
-        public async Task<IEnumerable<Book>> FindBooksOfUser(int userId)
+        public async Task<IEnumerable<Book>> FindBooksOfUser(int userId, bool actualBooks)
         {
-            var booksIdList = await _bookUserRepository.GetBooksIdOfUser(userId);
+            var booksIdList = await _bookUserRepository.GetBooksIdOfUser(userId, actualBooks);
             var bookList = new List<Book>();
             if (booksIdList.Any())
             {
@@ -71,6 +71,21 @@ namespace LibraryApplication.Domain.Services
                 }
             }
             return bookList;
+        }
+
+        public async Task<IEnumerable<User>> FindUsersOfBook(int bookId, bool actualUser)
+        {
+            var usersIdList = await _bookUserRepository.GetUsersIdOfBook(bookId, actualUser);
+            var usersList = new List<User>();
+            if (usersIdList.Any())
+            {
+                foreach (var userId in usersIdList)
+                {
+                    User tempUser = await _userRepository.GetById(userId);
+                    usersList.Add(tempUser);
+                }
+            }
+            return usersList;
         }
     }
 }
