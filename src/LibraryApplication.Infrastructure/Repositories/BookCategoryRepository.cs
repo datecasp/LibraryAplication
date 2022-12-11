@@ -40,5 +40,17 @@ namespace LibraryApplication.Infrastructure.Repositories
 
             return result;
         }
+
+        public async Task<ICollection<int>> GetCategoriesIdOfBook(int bookId)
+        {
+            var CatsOfBookList = Search(bc => bc.BookId == bookId).Result;
+            List<int> result = new List<int>();
+            foreach (var bc in CatsOfBookList)
+            {
+                result.Add(bc.CategoryId);
+            }
+
+            return result;
+        }
     }
 }

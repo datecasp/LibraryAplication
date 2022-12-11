@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LibraryApplication.API.Dtos.Book;
+using LibraryApplication.API.Dtos.Category;
 using LibraryApplication.Domain.Interfaces;
 using LibraryApplication.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -61,6 +62,20 @@ namespace LibraryApplication.API.Controllers
             if (!result.Any()) return Ok($"There are no books with category {categoryId}");
 
             return Ok(_mapper.Map<IEnumerable<BookResultDto>>(result));
+        }
+
+        [HttpGet("Find Categories of Book/BookId/{bookId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> FindCategoriesOfBook(int bookId)
+        {
+            if (!ModelState.IsValid) return BadRequest();
+
+            var result = await _bookCategoryService.FindCategoriesOfBook(bookId);
+
+            if (!result.Any()) return Ok($"There are no categories assigned to book {bookId}");
+
+            return Ok(_mapper.Map<IEnumerable<CategoryResultDto>>(result));
         }
     }
 }
