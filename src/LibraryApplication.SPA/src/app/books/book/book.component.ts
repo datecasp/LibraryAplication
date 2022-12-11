@@ -52,8 +52,8 @@ export class BookComponent implements OnInit {
     }
   }
 
-  public insertRecord(form: NgForm) {
-    this.service.addBook(form.form.value).subscribe(() => {
+  public async insertRecord(form: NgForm) {
+    (await this.service.addBook(form.form.value)).subscribe(() => {
       this.toastr.success('Registration successful');
       this.resetForm(form);
       this.router.navigate(['/books']);

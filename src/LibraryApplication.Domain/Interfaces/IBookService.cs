@@ -11,8 +11,8 @@ namespace LibraryApplication.Domain.Interfaces
     {
         Task<ICollection<Book>> GetAll();
         Task<Book> GetById(int id);
-        Task<Book> Add(Book book);
-        Task<Book> Update(Book book);
+        Book Add(Book book);
+        Task<bool> Update(Book book);
         Task<bool> Remove(Book book);
        
     }

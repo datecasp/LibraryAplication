@@ -27,27 +27,29 @@ namespace LibraryApplication.Domain.Services
             return await _userRepository.GetById(id);
         }
 
-        public async Task<User> Add(User User)
+        public User Add(User user)
         {
-            if (_userRepository.Search(b => b.UserName == User.UserName).Result.Any())
+            if (_userRepository.Search(b => b.UserName == user.UserName).Result.Any())
                 return null;
 
-            await _userRepository.Add(User);
-            return User;
+            _userRepository.Add(user);
+            return user;
         }
 
-        public async Task<User> Update(User User)
+        public async Task<bool> Update(User user)
         {
-            if (_userRepository.Search(b => b.UserName == User.UserName && b.Id != User.Id).Result.Any())
-                return null;
+            bool result = await _userRepository.Update(user);
 
-            await _userRepository.Update(User);
-            return User;
+            if (result)
+            {
+                return true;
+            }
+            return false;
         }
 
-        public async Task<bool> Remove(User User)
+        public async Task<bool> Remove(User user)
         {
-            await _userRepository.Remove(User);
+            await _userRepository.Remove(user);
             return true;
         }
 

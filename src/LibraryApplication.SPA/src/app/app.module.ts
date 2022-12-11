@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,6 +24,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { NgbdDatepickerPopup } from './datepicker/datepicker-popup';
 import { UserComponent } from './users/user/user.component';
 import { UserListComponent } from './users/user-list/user-list.component';
+import { AddCategoryToBookComponent } from './add-category-to-book/add-category-to-book.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,8 @@ import { UserListComponent } from './users/user-list/user-list.component';
     ConfirmationDialogComponent,
     NgbdDatepickerPopup,
     UserComponent,
-    UserListComponent
+    UserListComponent,
+    AddCategoryToBookComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +48,9 @@ import { UserListComponent } from './users/user-list/user-list.component';
     FormsModule,
     NgbModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatFormFieldModule,
+    MatSelectModule
   ],
   providers: [
     BookService,

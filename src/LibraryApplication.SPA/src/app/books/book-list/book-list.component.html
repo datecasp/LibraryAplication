@@ -11,12 +11,16 @@
       <tr>
         <th>Title</th>
         <th>Author</th>
+        <th>Categories</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let book of books">
         <td>{{book.title}}</td>
         <td>{{book.author}}</td>
+        <td>
+            <app-add-category-to-book></app-add-category-to-book>
+        </td>
         <td class="action-button-column">
           <a title="Edit" (click)="editBook(book.id)"><i class="fas fa-edit"></i> </a>
           <a title="Delete" (click)="deleteBook(book.id)" style="margin-left: 12px;"><i class="fas fa-trash-alt"></i> </a>

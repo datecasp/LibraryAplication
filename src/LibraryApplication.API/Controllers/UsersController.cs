@@ -2,6 +2,7 @@
 using LibraryApplication.API.Dtos.User;
 using LibraryApplication.Domain.Interfaces;
 using LibraryApplication.Domain.Models;
+using LibraryApplication.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryApplication.API.Controllers
@@ -23,9 +24,9 @@ namespace LibraryApplication.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
-            var categories = await _userService.GetAll();
+            var users = await _userService.GetAll();
 
-            return Ok(_mapper.Map<IEnumerable<UserResultDto>>(categories));
+            return Ok(_mapper.Map<IEnumerable<UserResultDto>>(users));
         }
 
         [HttpGet("{id:int}")]
@@ -33,40 +34,45 @@ namespace LibraryApplication.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
-            var category = await _userService.GetById(id);
+            var user = await _userService.GetById(id);
 
-            if (category == null) return NotFound();
+            if (user == null) return NotFound();
 
-            return Ok(_mapper.Map<UserResultDto>(category));
+            return Ok(_mapper.Map<UserResultDto>(user));
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add(UserAddDto categoryDto)
+        public IActionResult Add(UserAddDto userDto)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var category = _mapper.Map<User>(categoryDto);
-            var categoryResult = await _userService.Add(category);
+            var user = _mapper.Map<User>(userDto);
+            var userResult = _userService.Add(user);
 
-            if (categoryResult == null) return BadRequest();
+            if (userResult == null) return BadRequest();
 
-            return Ok(_mapper.Map<UserResultDto>(categoryResult));
+            return Ok(_mapper.Map<UserResultDto>(userResult));
         }
 
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(int id, UserEditDto categoryDto)
+        public async Task<IActionResult> Update(int id, UserEditDto userDto)
         {
-            if (id != categoryDto.Id) return BadRequest();
+            if (id != userDto.Id) return BadRequest();
 
             if (!ModelState.IsValid) return BadRequest();
 
-            await _userService.Update(_mapper.Map<User>(categoryDto));
+            bool result = await _userService.Update(_mapper.Map<User>(userDto));
 
-            return Ok(categoryDto);
+            if (result)
+            {
+                return Ok($"User {id} updated.");
+            }
+
+            return BadRequest();
         }
 
         [HttpDelete("{id:int}")]
@@ -74,14 +80,14 @@ namespace LibraryApplication.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Remove(int id)
         {
-            var category = await _userService.GetById(id);
-            if (category == null) return NotFound();
+            var user = await _userService.GetById(id);
+            if (user == null) return NotFound();
 
-            var result = await _userService.Remove(category);
+            var result = await _userService.Remove(user);
 
             if (!result) return BadRequest();
 
-            return Ok();
+            return Ok($"User {id} removed");
         }
     }
 }

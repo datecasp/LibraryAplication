@@ -60,7 +60,7 @@ export class UserComponent implements OnInit {
     this.service.addUser(form.form.value).subscribe(() => {
       this.toastr.success('Registration successful');
       this.resetForm(form);
-      this.router.navigate(['/categories']);
+      this.router.navigate(['/users']);
     }, () => {
       this.toastr.error('An error occurred on insert the record.');
     });
@@ -70,13 +70,13 @@ export class UserComponent implements OnInit {
     this.service.updateUser(form.form.value.id, form.form.value).subscribe(() => {
       this.toastr.success('Updated successful');
       this.resetForm(form);
-      this.router.navigate(['/categories']);
+      this.router.navigate(['/users']);
     }, () => {
       this.toastr.error('An error occurred on update the record.');
     });
   }
 
   public cancel() {
-    this.router.navigate(['/categories']);
+    this.router.navigate(['/users']);
   }
 }

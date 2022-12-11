@@ -2,6 +2,7 @@
 using LibraryApplication.Domain.Models;
 using LibraryApplication.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,11 @@ namespace LibraryApplication.Infrastructure.Repositories
             DbSet = db.Set<TEntity>();
         }
 
-        public Task Add(TEntity entity)
+        public async Task<TEntity> Add(TEntity entity)
         {
-            throw new NotImplementedException();
+            DbSet.AddAsync(entity);
+            Db.SaveChanges();
+            return entity;
         }
 
         public async Task<ICollection<TEntity>> GetAll()
@@ -35,39 +38,54 @@ namespace LibraryApplication.Infrastructure.Repositories
 
         public async Task<TEntity> GetById(int id)
         {
-            var result = await DbSet.FindAsync(id);
+            var libro = await DbSet.FindAsync(id);
 
-            if (result == null)
+            if (libro == null)
             {
                 return null;
             }
 
-            return result;
+            return libro;
         }
 
-        public Task Remove(TEntity entity)
+        public async Task<bool> Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            if (EntityExists(entity)) 
+            {
+                DbSet.Update(entity);
+                await SaveChanges();
+                return true;
+            }
+            else { return false; }
         }
 
-        public Task<int> SaveChanges()
+        public async Task Remove(TEntity entity)
         {
-            throw new NotImplementedException();
+            if (EntityExists(entity))
+            {
+                DbSet.Remove(entity);
+            }
+            await SaveChanges();
         }
 
-        public Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await DbSet.AsNoTracking().Where(predicate).ToListAsync();
         }
 
-        public Task Update(TEntity entity)
+        public async Task<int> SaveChanges()
         {
-            throw new NotImplementedException();
+            return await Db.SaveChangesAsync();
+        }
+
+        public bool EntityExists(TEntity entity) 
+        {
+            return DbSet.Any(e => e.Id == entity.Id);
         }
 
         public void Dispose()
         {
-            //TODO
+            GC.SuppressFinalize(this);
         }
 
     }

@@ -27,22 +27,24 @@ namespace LibraryApplication.Domain.Services
             return await _bookRepository.GetById(id);
         }
 
-        public async Task<Book> Add(Book book)
+        public Book Add(Book book)
         {
             if (_bookRepository.Search(b => b.Title == book.Title).Result.Any())
                 return null;
 
-            await _bookRepository.Add(book);
+            _bookRepository.Add(book);
             return book;
         }
 
-        public async Task<Book> Update(Book book)
+        public async Task<bool> Update(Book book)
         {
-            if (_bookRepository.Search(b => b.Title == book.Title && b.Id != book.Id).Result.Any())
-                return null;
+            bool result = await _bookRepository.Update(book);
 
-            await _bookRepository.Update(book);
-            return book;
+            if (result)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> Remove(Book book)

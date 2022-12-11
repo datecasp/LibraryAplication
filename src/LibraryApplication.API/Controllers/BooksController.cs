@@ -43,12 +43,12 @@ namespace LibraryApplication.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add(BookAddDto bookDto)
+        public IActionResult Add(BookAddDto bookDto)
         {
             if (!ModelState.IsValid) return BadRequest();
 
             var book = _mapper.Map<Book>(bookDto);
-            var bookResult = await _bookService.Add(book);
+            var bookResult = _bookService.Add(book);
 
             if (bookResult == null) return BadRequest();
 
@@ -63,10 +63,15 @@ namespace LibraryApplication.API.Controllers
             if (id != bookDto.Id) return BadRequest();
 
             if (!ModelState.IsValid) return BadRequest();
+            
+            bool result = await _bookService.Update(_mapper.Map<Book>(bookDto));
 
-            await _bookService.Update(_mapper.Map<Book>(bookDto));
+            if (result) 
+            {
+                return Ok($"Book {id} updated.");
+            }
 
-            return Ok(bookDto);
+            return BadRequest();
         }
 
         [HttpDelete("{id:int}")]
@@ -79,7 +84,7 @@ namespace LibraryApplication.API.Controllers
 
             await _bookService.Remove(book);
 
-            return Ok();
+            return Ok($"Book {id} removed");
         }
     }
 }
