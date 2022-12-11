@@ -57,5 +57,20 @@ namespace LibraryApplication.Domain.Services
             }
             return true;
         }
+
+        public async Task<IEnumerable<Book>> FindBooksWithCategory(int categoryId)
+        {
+            var booksIdList = await _bookCategoryRepository.GetBooksIdWithCategory(categoryId);
+            var bookList = new List<Book>();
+            if (booksIdList.Any())
+            {
+                foreach (var bookId in booksIdList)
+                {
+                    Book tempBook = await _bookRepository.GetById(bookId);
+                    bookList.Add(tempBook);
+                }
+            }
+            return bookList;
+        }
     }
 }

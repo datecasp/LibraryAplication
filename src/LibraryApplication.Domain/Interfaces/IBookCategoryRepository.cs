@@ -13,5 +13,6 @@ namespace LibraryApplication.Domain.Interfaces
 
         Task DeleteCategoryFromBook(BookCategory bc);
 
+        Task<ICollection<int>> GetBooksIdWithCategory(int categoryId);
     }
 }

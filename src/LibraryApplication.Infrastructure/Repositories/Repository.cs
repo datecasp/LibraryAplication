@@ -38,14 +38,14 @@ namespace LibraryApplication.Infrastructure.Repositories
 
         public async Task<TEntity> GetById(int id)
         {
-            var libro = await DbSet.FindAsync(id);
+            var entity = await DbSet.FindAsync(id);
 
-            if (libro == null)
+            if (entity == null)
             {
                 return null;
             }
 
-            return libro;
+            return entity;
         }
 
         public async Task<bool> Update(TEntity entity)
