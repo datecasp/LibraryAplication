@@ -17,14 +17,14 @@ namespace LibraryApplication.API.Controllers
         [HttpPost("User gets Book/Book/{bookId:int}/userId/{userId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult AddActualUserToBook(int bookId, int userId)
+        public async Task<IActionResult> AddActualUserToBook(int bookId, int userId)
         {
             if (!ModelState.IsValid) return BadRequest();
 
 
-            var result = _bookUserService.AddActualUserToBook(bookId, userId);
+            var result = await _bookUserService.AddActualUserToBook(bookId, userId);
 
-            if (result == null) return BadRequest();
+            if (!result) return BadRequest($"Book {bookId} is not avaliable");
 
             return Ok($"User {userId} gets book {bookId}");
         }

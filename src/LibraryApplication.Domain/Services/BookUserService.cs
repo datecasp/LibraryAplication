@@ -17,17 +17,22 @@ namespace LibraryApplication.Domain.Services
             _bookUserRepository = bookUserRepository;
         }
 
-        public Task AddActualUserToBook(int bookId, int userId)
+        public async Task<bool> AddActualUserToBook(int bookId, int userId)
         {
-            BookUser bu = new()
+            var bookUserList = _bookUserRepository.Search(bu => bu.BookId == bookId && bu.ActualUser == true).Result;
+            if (bookUserList.Any())
+            {
+                return false;
+            }
+            BookUser newBu = new()
             {
                 BookId = bookId,
                 UserId = userId,
                 ActualUser = true
             };
 
-            _bookUserRepository.AddActualUserToBook(bu);
-            return Task.CompletedTask;
+            await _bookUserRepository.AddActualUserToBook(newBu);
+            return true;
         }
 
         public Task RemoveActualUserFromBook(int bookId, int userId)
