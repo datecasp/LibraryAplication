@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using LibraryApplication.API.Dtos.Book;
+using LibraryApplication.API.Dtos.Category;
+using LibraryApplication.API.Dtos.User;
 using LibraryApplication.Domain.Interfaces;
 using LibraryApplication.Domain.Models;
 using LibraryApplication.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace LibraryApplication.API.Controllers
 {
@@ -52,15 +55,38 @@ namespace LibraryApplication.API.Controllers
         [HttpGet("BooksOfUser/userId/{userId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> FindBooksOfUser(int userId)
+        public async Task<IActionResult> FindBooksOfUser(int userId, bool actualBooks = true)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var result = await _bookUserService.FindBooksOfUser(userId);
+            var result = await _bookUserService.FindBooksOfUser(userId, actualBooks);
 
-            if (!result.Any()) return Ok($"There are no books assigned to User {userId}");
+            if (!result.Any())
+            {
+                if (actualBooks) return Ok($"There are no books actually assigned to user {userId}");
 
+                return BadRequest($"User {userId} has not past books");
+            }
             return Ok(_mapper.Map<IEnumerable<BookResultDto>>(result));
+        }
+
+        [HttpGet("UsersOfBook/BookId/{bookId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> FindUsersOfBook(int bookId, bool actualUser = true)
+        {
+            if (!ModelState.IsValid) return BadRequest();
+
+            var result = await _bookUserService.FindUsersOfBook(bookId, actualUser);
+
+            if (!result.Any())
+            {
+                if(actualUser) return Ok($"There are no users actually assigned to book {bookId}");
+
+                return BadRequest($"Book {bookId} has not past users");
+            }
+            
+            return Ok(_mapper.Map<IEnumerable<UserResultDto>>(result));
         }
     }
 }
