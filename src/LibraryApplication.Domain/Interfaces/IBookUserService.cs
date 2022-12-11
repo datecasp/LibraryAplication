@@ -12,5 +12,7 @@ namespace LibraryApplication.Domain.Interfaces
         Task<bool> AddActualUserToBook(int bookId, int userId);
 
         Task<bool> RemoveActualUserFromBook(int bookId, int userId);
+
+        Task<IEnumerable<Book>> FindBooksOfUser(int userId);
     }
 }
