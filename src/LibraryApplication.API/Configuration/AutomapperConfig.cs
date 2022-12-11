@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using LibraryApplication.API.Dtos.Book;
-using LibraryApplication.API.Dtos.BookCategory;
-using LibraryApplication.API.Dtos.BookUser;
 using LibraryApplication.API.Dtos.Category;
 using LibraryApplication.API.Dtos.User;
 using LibraryApplication.Domain.Models;
@@ -21,8 +19,6 @@ namespace LibraryApplication.API.Configuration
             CreateMap<User, UserAddDto>().ReverseMap();
             CreateMap<User, UserEditDto>().ReverseMap();
             CreateMap<User, UserResultDto>().ReverseMap();
-            CreateMap<BookCategory, BookCategoryDto>().ReverseMap();
-            CreateMap<BookUser, BookUserDto>().ReverseMap();
         }
     }
 }

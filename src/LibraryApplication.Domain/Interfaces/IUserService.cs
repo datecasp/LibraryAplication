@@ -12,7 +12,7 @@ namespace LibraryApplication.Domain.Interfaces
         Task<ICollection<User>> GetAll();
         Task<User> GetById(int id);
         User Add(User user);
-        Task<User> Update(User user);
+        Task<bool> Update(User user);
         Task<bool> Remove(User user);
     }
 }

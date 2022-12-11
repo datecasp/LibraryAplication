@@ -2,6 +2,7 @@
 using LibraryApplication.API.Dtos.Category;
 using LibraryApplication.Domain.Interfaces;
 using LibraryApplication.Domain.Models;
+using LibraryApplication.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryApplication.API.Controllers
@@ -64,9 +65,14 @@ namespace LibraryApplication.API.Controllers
 
             if (!ModelState.IsValid) return BadRequest();
 
-            await _categoryService.Update(_mapper.Map<Category>(categoryDto));
+            bool result = await _categoryService.Update(_mapper.Map<Category>(categoryDto));
 
-            return Ok(categoryDto);
+            if (result)
+            {
+                return Ok($"Category {id} updated.");
+            }
+
+            return BadRequest();
         }
 
         [HttpDelete("{id:int}")]

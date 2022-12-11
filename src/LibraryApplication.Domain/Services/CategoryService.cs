@@ -36,13 +36,15 @@ namespace LibraryApplication.Domain.Services
             return category;
         }
 
-        public async Task<Category> Update(Category category)
+        public async Task<bool> Update(Category category)
         {
-            if (_categoryRepository.Search(c => c.CategoryName == category.CategoryName && c.Id != category.Id).Result.Any())
-                return null;
+            bool result = await _categoryRepository.Update(category);
 
-            await _categoryRepository.Update(category);
-            return category;
+            if (result)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> Remove(Category category)

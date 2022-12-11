@@ -63,10 +63,15 @@ namespace LibraryApplication.API.Controllers
             if (id != bookDto.Id) return BadRequest();
 
             if (!ModelState.IsValid) return BadRequest();
+            
+            bool result = await _bookService.Update(_mapper.Map<Book>(bookDto));
 
-            await _bookService.Update(_mapper.Map<Book>(bookDto));
+            if (result) 
+            {
+                return Ok($"Book {id} updated.");
+            }
 
-            return Ok(bookDto);
+            return BadRequest();
         }
 
         [HttpDelete("{id:int}")]

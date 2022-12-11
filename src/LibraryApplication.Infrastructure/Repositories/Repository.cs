@@ -48,13 +48,15 @@ namespace LibraryApplication.Infrastructure.Repositories
             return libro;
         }
 
-        public async Task Update(TEntity entity)
+        public async Task<bool> Update(TEntity entity)
         {
             if (EntityExists(entity)) 
             {
                 DbSet.Update(entity);
+                await SaveChanges();
+                return true;
             }
-            await SaveChanges();
+            else { return false; }
         }
 
         public async Task Remove(TEntity entity)
@@ -83,7 +85,7 @@ namespace LibraryApplication.Infrastructure.Repositories
 
         public void Dispose()
         {
-            Db?.Dispose();
+            GC.SuppressFinalize(this);
         }
 
     }
