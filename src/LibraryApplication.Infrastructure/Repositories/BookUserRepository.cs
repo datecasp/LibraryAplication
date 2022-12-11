@@ -28,5 +28,18 @@ namespace LibraryApplication.Infrastructure.Repositories
             Db.SaveChanges();
             return Task.CompletedTask;
         }
+
+        public async Task<ICollection<int>> GetBooksIdOfUser(int userId)
+        {
+            var booksOfUser = Search(bc => bc.UserId == userId && bc.ActualUser).Result;
+            List<int> result = new List<int>();
+            foreach (var bc in booksOfUser)
+            {
+                result.Add(bc.BookId);
+            }
+
+            return result;
+        }
+
     }
 }

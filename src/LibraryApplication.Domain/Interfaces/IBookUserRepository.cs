@@ -13,5 +13,6 @@ namespace LibraryApplication.Domain.Interfaces
 
         Task RemoveActualUserFromBook(BookUser bu);
 
+        Task<ICollection<int>> GetBooksIdOfUser(int userId);
     }
 }

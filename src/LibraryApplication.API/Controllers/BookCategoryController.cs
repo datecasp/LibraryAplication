@@ -21,7 +21,7 @@ namespace LibraryApplication.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("Add Category to Book/Book/{bookId:int}/categoryId/{categoryId:int}")]
+        [HttpPost("AddCategory/Book/{bookId:int}/categoryId/{categoryId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddCategoryToBook(int bookId, int categoryId)
@@ -36,7 +36,7 @@ namespace LibraryApplication.API.Controllers
             return Ok($"Category {categoryId} added to book {bookId}");
         }
 
-        [HttpDelete("Remove Category from Book/Book/{bookId:int}/categoryId/{categoryId:int}")]
+        [HttpDelete("RemoveCategory/Book/{bookId:int}/categoryId/{categoryId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteCategoryFromBook(int bookId, int categoryId) 
@@ -50,7 +50,7 @@ namespace LibraryApplication.API.Controllers
             return Ok($"Category {categoryId} removed from book {bookId}");
         }
 
-        [HttpGet("Find Books with Category/categoryId/{categoryId:int}")]
+        [HttpGet("BooksWithCategory/categoryId/{categoryId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FindBooksWithCategory(int categoryId)
@@ -64,7 +64,7 @@ namespace LibraryApplication.API.Controllers
             return Ok(_mapper.Map<IEnumerable<BookResultDto>>(result));
         }
 
-        [HttpGet("Find Categories of Book/BookId/{bookId:int}")]
+        [HttpGet("CategoriesOfBook/BookId/{bookId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FindCategoriesOfBook(int bookId)

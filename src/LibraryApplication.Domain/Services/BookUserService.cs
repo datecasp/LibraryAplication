@@ -12,11 +12,13 @@ namespace LibraryApplication.Domain.Services
     {
         private readonly IBookUserRepository _bookUserRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IBookRepository _bookRepository;
 
-        public BookUserService(IBookUserRepository bookUserRepository, IUserRepository userRepository)
+        public BookUserService(IBookUserRepository bookUserRepository, IUserRepository userRepository, IBookRepository bookRepository)
         {
             _bookUserRepository = bookUserRepository;
             _userRepository = userRepository;
+            _bookRepository = bookRepository;
         }
 
         public async Task<bool> AddActualUserToBook(int bookId, int userId)
@@ -54,6 +56,21 @@ namespace LibraryApplication.Domain.Services
                 _bookUserRepository.RemoveActualUserFromBook(bookUser);
             }
             return true;
+        }
+
+        public async Task<IEnumerable<Book>> FindBooksOfUser(int userId)
+        {
+            var booksIdList = await _bookUserRepository.GetBooksIdOfUser(userId);
+            var bookList = new List<Book>();
+            if (booksIdList.Any())
+            {
+                foreach (var bookId in booksIdList)
+                {
+                    Book tempBook = await _bookRepository.GetById(bookId);
+                    bookList.Add(tempBook);
+                }
+            }
+            return bookList;
         }
     }
 }
