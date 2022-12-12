@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BookService } from '../_services/book.service';
 import { CategoryService } from '../_services/category.service';
+import { BookCategoryService } from '../_services/bookCategory.service';
 
 @Component({
   selector: 'app-add-category-to-book',
@@ -12,18 +13,23 @@ import { CategoryService } from '../_services/category.service';
   styleUrls: ['./add-category-to-book.component.css']
 })
 export class AddCategoryToBookComponent implements OnInit {
+  categories: Category[] = [];
 
   constructor(private router: Router,
     private bookService: BookService,
-    private catService: CategoryService,
+    private categoryService: CategoryService,
+    private bookCategoryService: BookCategoryService,
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.categoryService.getCategories().subscribe(categories => {
+      this.categories = categories;
+    }, err => {
+      this.toastr.error('An error occurred on get the records.');
+    });
   }
 
-  categories: Category[] = [
-    { id: 0, categoryName: 'hpal' },
-    { id: 1, categoryName: 'eryht' },
-    { id: 2, categoryName: 'dfvfv' }
-  ];
+  public onClick() {
+    this.bookCategoryService.addBookCategory()
+  }
 }

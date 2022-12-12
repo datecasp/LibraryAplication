@@ -4,7 +4,6 @@ import { NgForm } from '@angular/forms';
 import { Book } from 'src/app/_models/Book';
 import { BookService } from 'src/app/_services/book.service';
 import { ToastrService } from 'ngx-toastr';
-import { CategoryService } from 'src/app/_services/category.service';
 
 @Component({
   selector: 'app-book',
@@ -15,8 +14,7 @@ export class BookComponent implements OnInit {
   public formData: Book = new Book();
   public categories: any;
 
-  constructor(public service: BookService,
-    private categoryService: CategoryService,
+  constructor(public bookService: BookService,
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService) { }
@@ -29,22 +27,17 @@ export class BookComponent implements OnInit {
     });
 
     if (id != null) {
-      this.service.getBookById(id).subscribe(book => {
+      this.bookService.getBookById(id).subscribe(book => {
         this.formData = book;
       });
     } else {
       this.resetForm();
     }
 
-    this.categoryService.getCategories().subscribe(categories => {
-      this.categories = categories;
-    }, err => {
-      this.toastr.error('An error occurred on get the records.');
-    });
   }
 
   public onSubmit(form: NgForm) {
-    form.value.categoryId = Number(form.value.categoryId);
+    form.value.bookId = Number(form.value.bookId);
     if (form.value.id === 0) {
       this.insertRecord(form);
     } else {
@@ -53,7 +46,7 @@ export class BookComponent implements OnInit {
   }
 
   public async insertRecord(form: NgForm) {
-    (await this.service.addBook(form.form.value)).subscribe(() => {
+    (await this.bookService.addBook(form.form.value)).subscribe(() => {
       this.toastr.success('Registration successful');
       this.resetForm(form);
       this.router.navigate(['/books']);
@@ -63,7 +56,7 @@ export class BookComponent implements OnInit {
   }
 
   public updateRecord(form: NgForm) {
-    this.service.updateBook(form.form.value.id, form.form.value).subscribe(() => {
+   this.bookService.updateBook(form.form.value.id, form.form.value).subscribe(() => {
       this.toastr.success('Updated successful');
       this.resetForm(form);
       this.router.navigate(['/books']);
