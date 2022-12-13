@@ -30,6 +30,6 @@ export class AddCategoryToBookComponent implements OnInit {
   }
 
   public onClick() {
-    this.bookCategoryService.addBookCategory()
+   
   }
 }
