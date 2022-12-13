@@ -3,7 +3,7 @@
         <mat-label>Add Category</mat-label>
         <mat-select>
             <mat-option *ngFor="let category of categories" [value]="category.id">
-                <a (click)="onClick()">{{category.categoryName}}</a>
+                <a (click)="SendCategoryID(category.id)">{{category.categoryName}}</a>
             </mat-option>
         </mat-select>
     </mat-form-field>

@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { BookCategoryService } from '../../_services/bookCategory.service';
+import { BookCategory } from '../../_models/BookCategory';
 
 
 @Component({
@@ -15,11 +17,15 @@ import { debounceTime } from 'rxjs/operators';
 export class BookListComponent implements OnInit {
   public books: any;
   public listComplet: any;
+  public bookId: number = -11;
+  public categoryId: number = -11;
+  public bookCategory: BookCategory = new BookCategory();
   public searchTerm: string ="";
   public searchValueChanged: Subject<string> = new Subject<string>();
 
   constructor(private router: Router,
-    private service: BookService,
+    private boookService: BookService,
+    private bookCategoryService: BookCategoryService,
     private toastr: ToastrService,
     private confirmationDialogService: ConfirmationDialogService) { }
 
@@ -34,11 +40,18 @@ export class BookListComponent implements OnInit {
 
   private getValues() {
 
-    this.service.getBooks().subscribe(books => {
+    this.boookService.getBooks().subscribe(books => {
       this.books = books;
       this.listComplet = books;
     });
   }
+
+  public GetCategoryId(categoryId: number) {
+    this.bookCategory.bookId = this.bookId;
+    this.bookCategory.categoryId = categoryId;
+    this.bookCategoryService.addBookCategory(this.bookCategory);
+  }
+
 
   public addBook() {
     this.router.navigate(['/book']);
@@ -51,7 +64,7 @@ export class BookListComponent implements OnInit {
   public deleteBook(bookId: number) {
     this.confirmationDialogService.confirm('Atention', 'Do you really want to delete this book?')
       .then(() =>
-        this.service.deleteBook(bookId).subscribe(() => {
+        this.boookService.deleteBook(bookId).subscribe(() => {
           this.toastr.success('The book has been deleted');
           this.getValues();
         },
@@ -63,13 +76,13 @@ export class BookListComponent implements OnInit {
 
   private search() {
     if (this.searchTerm !== '') {
-      this.service.searchBooksWithCategory(this.searchTerm).subscribe(book => {
+      this.boookService.searchBooksWithCategory(this.searchTerm).subscribe(book => {
         this.books = book;
       }, error => {
         this.books = [];
       });
     } else {
-      this.service.getBooks().subscribe(books => this.books = books);
+      this.boookService.getBooks().subscribe(books => this.books = books);
     }
   }
 }

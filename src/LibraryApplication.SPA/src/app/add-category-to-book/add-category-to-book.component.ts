@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Category } from '../_models/Category';
 import { MatFormField } from '@angular/material/form-field';
 import { Router } from '@angular/router';
@@ -15,6 +15,8 @@ import { BookCategoryService } from '../_services/bookCategory.service';
 export class AddCategoryToBookComponent implements OnInit {
   categories: Category[] = [];
 
+  @Output() categoryIdEmitter: EventEmitter<number> = new EventEmitter<number>();
+
   constructor(private router: Router,
     private bookService: BookService,
     private categoryService: CategoryService,
@@ -29,7 +31,8 @@ export class AddCategoryToBookComponent implements OnInit {
     });
   }
 
-  public onClick() {
-   
+  SendCategoryID(categoryId: number): void {
+    this.categoryIdEmitter.emit(categoryId);
   }
+
 }
