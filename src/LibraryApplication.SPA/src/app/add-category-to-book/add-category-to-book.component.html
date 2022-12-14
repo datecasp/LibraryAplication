@@ -1,10 +1,12 @@
 <ng-form>
-    <mat-form-field appearance="fill">
-        <mat-label>Add Category</mat-label>
-        <mat-select>
-            <mat-option *ngFor="let category of categories" [value]="category.id">
-                <a (click)="SendCategoryID(category.id)">{{category.categoryName}}</a>
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Add Category</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let category of categories" [value]="category.id">
+        <a (click)="SendCategoryID(category.id)"
+          >{{ category.categoryName }} {{ category.id }}</a
+        >
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </ng-form>
