@@ -1,11 +1,12 @@
 <ng-form>
-    <mat-form-field appearance="fill">
-        <mat-label>Add Category</mat-label>
-        <mat-select>
-            <mat-option *ngFor="let category of categories" >
-                <a type="submit" (click)="SendBookCategoryToInsert(5)">{{category.categoryName}}</a>
-            </mat-option>
-
-        </mat-select>
-    </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Add Category</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let category of categories">
+        <a type="submit" (click)="SendBookCategoryToInsert(5)"
+          >{{ category.categoryName }} {{ category.id }}</a
+        >
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </ng-form>
