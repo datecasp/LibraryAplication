@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { BookCategoryService } from '../../_services/bookCategory.service';
 import { BookCategory } from '../../_models/BookCategory';
+import { Book } from '../../_models/Book';
 
 
 @Component({
@@ -15,17 +16,14 @@ import { BookCategory } from '../../_models/BookCategory';
   styleUrls: ['./book-list.component.css']
 })
 export class BookListComponent implements OnInit {
-  public books: any;
+  public books: Book[] = [{ id: -111, title: "hjhjhjhjh", author: "sddfefef" }];
   public listComplet: any;
-  public bookId: number = -11;
-  public categoryId: number = -11;
-  public bookCategory: BookCategory = new BookCategory();
+  public book: Book = { id: -55, title: "ddddddd", author: "ñlkdñokñokñl" };
   public searchTerm: string ="";
   public searchValueChanged: Subject<string> = new Subject<string>();
 
   constructor(private router: Router,
     private boookService: BookService,
-    private bookCategoryService: BookCategoryService,
     private toastr: ToastrService,
     private confirmationDialogService: ConfirmationDialogService) { }
 
@@ -45,13 +43,6 @@ export class BookListComponent implements OnInit {
       this.listComplet = books;
     });
   }
-
-  public GetCategoryId(categoryId: number) {
-    this.bookCategory.bookId = this.bookId;
-    this.bookCategory.categoryId = categoryId;
-    this.bookCategoryService.addBookCategory(this.bookCategory);
-  }
-
 
   public addBook() {
     this.router.navigate(['/book']);
