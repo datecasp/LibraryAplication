@@ -9,7 +9,7 @@ using static System.Reflection.Metadata.BlobBuilder;
 
 namespace LibraryApplication.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     public class BookCategoryController : MainController
     {
         private readonly IBookCategoryService _bookCategoryService;
@@ -22,7 +22,7 @@ namespace LibraryApplication.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("AddCategoryToBook")]
+        [HttpPost("Book/AddCategoryToBook")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddCategoryToBook(BookCategoryasicDto bookCategoryDto)
