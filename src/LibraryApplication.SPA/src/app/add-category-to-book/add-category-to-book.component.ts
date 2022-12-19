@@ -16,7 +16,7 @@ import { BookCategory } from '../_models/BookCategory';
 export class AddCategoryToBookComponent implements OnInit {
   categories: Category[] = [{ id: 1, categoryName: "una" }, { id: 2, categoryName: "dos" }];
   bookIdList: number[] = [];
-  categoryId: number = -11;
+  public categoryId: number = -11;
   bookCategory: BookCategory = { id: 0, bookId: 0, categoryId: 0 }
 
   @Input() book: Book = {id: -99, title: "qqqqqqqqq", author: "hijo"};
@@ -25,10 +25,9 @@ export class AddCategoryToBookComponent implements OnInit {
 
 
 constructor(private router: Router,
-    private bookService: BookService,
-    private categoryService: CategoryService,
-    private bookCategoryService: BookCategoryService,
-    private toastr: ToastrService) { }
+  private categoryService: CategoryService,
+  private bookCategoryService: BookCategoryService,
+  private toastr: ToastrService) { }
 
   ngOnInit(): void {
 
@@ -39,9 +38,10 @@ constructor(private router: Router,
     });
   }
 
-  public SendBookCategoryToInsert(categoryId: number) {
+  public SendBookCategoryToInsert(category: Category) {
     this.bookCategory.bookId = this.book.id,
-      this.bookCategory.categoryId = categoryId;
-    alert("book: " + this.book.id + "    cat: " + categoryId);
+    this.bookCategory.categoryId = category.id;
+    alert("book: " + this.book.id + "    cat: " + category.id);
+    this.bookCategoryService.addBookCategory(this.bookCategory);
   }
 }

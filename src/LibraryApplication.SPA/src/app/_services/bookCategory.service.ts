@@ -13,7 +13,7 @@ export class BookCategoryService {
   constructor(private http: HttpClient) { }
   //IMPLEMENTAR LOGICA AddCategoryToBook(bookId, categoryID)
   public async addBookCategory(bookCategory: BookCategory) {
-    return await this.http.post(this.baseUrl + 'bookCategory/AddCategory/Book/' + bookCategory.bookId + '/categoryId/' + bookCategory.categoryId, bookCategory);
+    return await this.http.post(this.baseUrl + 'BookCategory/AddCategoryToBook', bookCategory);
   }
 
     //IMPLEMENTAR LOGICA RemoveCategoryFromBook(bookId, categoryID)
