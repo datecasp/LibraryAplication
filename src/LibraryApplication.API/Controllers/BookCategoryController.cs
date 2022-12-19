@@ -22,7 +22,7 @@ namespace LibraryApplication.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("Book/AddCategoryToBook")]
+        [HttpPost("Books/AddCategoryToBook")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddCategoryToBook(BookCategoryasicDto bookCategoryDto)

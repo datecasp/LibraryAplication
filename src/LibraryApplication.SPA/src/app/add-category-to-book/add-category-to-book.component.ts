@@ -7,6 +7,7 @@ import { CategoryService } from '../_services/category.service';
 import { BookCategoryService } from '../_services/bookCategory.service';
 import { Book } from '../_models/Book';
 import { BookCategory } from '../_models/BookCategory';
+import { BookCategoryDto } from '../_models/BookCategoryDto';
 
 @Component({
   selector: 'app-add-category-to-book',
@@ -17,7 +18,7 @@ export class AddCategoryToBookComponent implements OnInit {
   categories: Category[] = [{ id: 1, categoryName: "una" }, { id: 2, categoryName: "dos" }];
   bookIdList: number[] = [];
   public categoryId: number = -11;
-  bookCategory: BookCategory = { id: 0, bookId: 0, categoryId: 0 }
+  bookCategory: BookCategoryDto = { bookId: 0, categoryId: 0 }
 
   @Input() book: Book = {id: -99, title: "qqqqqqqqq", author: "hijo"};
     value: number = -33;
