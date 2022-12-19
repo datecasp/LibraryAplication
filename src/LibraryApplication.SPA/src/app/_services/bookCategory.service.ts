@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BookCategoryDto } from '../_models/BookCategoryDto';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environments';
+import { Category } from '../_models/Category';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class BookCategoryService {
     return this.http.get<BookCategoryDto[]>(`${this.baseUrl} + books/booksWithCategory/categoryId//${categoryId}`);
   }
 
-  public searchCategoriesOfBook(bookId: number): Observable<BookCategoryDto[]> {
-    return this.http.get<BookCategoryDto[]>(`${this.baseUrl} + categpries/categoriesOfBook/bookId//${bookId}`);
+  public searchCategoriesOfBook(bookId: number): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.baseUrl} + books/categoriesofbook/bookId//${bookId}`);
   }
 }

@@ -65,7 +65,7 @@ namespace LibraryApplication.API.Controllers
             return Ok(_mapper.Map<IEnumerable<BookResultDto>>(result));
         }
 
-        [HttpGet("CategoriesOfBook/BookId/{bookId:int}")]
+        [HttpGet("Books/CategoriesOfBook/BookId/{bookId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FindCategoriesOfBook(int bookId)

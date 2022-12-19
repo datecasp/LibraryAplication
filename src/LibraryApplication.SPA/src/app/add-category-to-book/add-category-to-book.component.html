@@ -5,7 +5,10 @@
             <mat-option *ngFor="let category of categories">
                 <button type="submit" (click)="SendBookCategoryToInsert(category)">{{category.categoryName}} {{category.id}}</button>
             </mat-option>
-
         </mat-select>
     </mat-form-field>
+    <mat-card>
+        <mat-card-content categoriesString="categoriesString" >{{categoriesString}}</mat-card-content>
+    </mat-card>
 </ng-form>
+

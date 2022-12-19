@@ -17,6 +17,7 @@ export class AddCategoryToBookComponent implements OnInit {
   categories: Category[] = [{ id: 1, categoryName: "una" }, { id: 2, categoryName: "dos" }];
   bookIdList: number[] = [];
   public categoryId: number = -11;
+  public categoriesString: string = "";
   bookCategoryDto: BookCategoryDto = { bookId: 0, categoryId: 0 }
 
   @Input() book: Book = {id: -99, title: "qqqqqqqqq", author: "hijo"};
@@ -33,9 +34,20 @@ constructor(private router: Router,
 
     this.categoryService.getCategories().subscribe(categories => {
       this.categories = categories;
+      this.UpdateCategoriesList();
     }, err => {
       this.toastr.error('An error occurred on get the records.');
     });
+
+  }
+
+  private async UpdateCategoriesList() {
+    (await this.bookCategoryService.searchCategoriesOfBook(this.book.id)).subscribe(category => {
+      for (let i = 0; i < category.length; i++) {
+        category.forEach(cat => this.categoriesString.concat(cat.categoryName)) ;
+      }
+    });
+    this.toastr.error(this.categoriesString);
   }
 
   public async SendBookCategoryToInsert(category: Category) {
@@ -47,6 +59,6 @@ constructor(private router: Router,
     }, () => {
       this.toastr.error('An error occurred on insert the record.');
     });
-    //alert("book: " + this.book.id + "    cat: " + category.id);
+    this.UpdateCategoriesList();
   }
 }
