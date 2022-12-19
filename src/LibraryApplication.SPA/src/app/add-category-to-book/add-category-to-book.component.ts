@@ -17,8 +17,9 @@ export class AddCategoryToBookComponent implements OnInit {
   categories: Category[] = [{ id: 1, categoryName: "una" }, { id: 2, categoryName: "dos" }];
   bookIdList: number[] = [];
   public categoryId: number = -11;
-  public categoriesString: string = "";
-  bookCategoryDto: BookCategoryDto = { bookId: 0, categoryId: 0 }
+  public categoriesOfBook: Category[] = [{ id: 1, categoryName: "una" }, { id: 2, categoryName: "dos" }];
+  bookCategoryDto: BookCategoryDto = { bookId: 0, categoryId: 0 };
+  listCategories: string = "";
 
   @Input() book: Book = {id: -99, title: "qqqqqqqqq", author: "hijo"};
     value: number = -33;
@@ -44,11 +45,17 @@ constructor(private router: Router,
   private async UpdateCategoriesList() {
     (await this.bookCategoryService.searchCategoriesOfBook(this.book.id)).subscribe(category => {
       for (let i = 0; i < category.length; i++) {
-        category.forEach(cat => this.categoriesString.concat(cat.categoryName)) ;
+        this.categoriesOfBook = category;
       }
     });
-    this.toastr.error(this.categoriesString);
+    for (let cat of this.categoriesOfBook) {
+      this.listCategories.concat(cat.categoryName);
+    }
+    this.toastr.error(this.listCategories + "my error");
+    console.log(this.listCategories);
   }
+
+  
 
   public async SendBookCategoryToInsert(category: Category) {
     this.bookCategoryDto.bookId = this.book.id,

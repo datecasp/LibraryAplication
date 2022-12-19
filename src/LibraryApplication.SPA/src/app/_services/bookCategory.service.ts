@@ -27,6 +27,6 @@ export class BookCategoryService {
   }
 
   public searchCategoriesOfBook(bookId: number): Observable<Category[]> {
-    return this.http.get<Category[]>(`${this.baseUrl} + books/categoriesofbook/bookId//${bookId}`);
+    return this.http.get<Category[]>(this.baseUrl + 'books/categoriesofbook/bookId/'+bookId);
   }
 }

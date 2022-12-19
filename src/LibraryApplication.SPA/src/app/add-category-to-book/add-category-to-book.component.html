@@ -8,7 +8,7 @@
         </mat-select>
     </mat-form-field>
     <mat-card>
-        <mat-card-content categoriesString="categoriesString" >{{categoriesString}}</mat-card-content>
+        <mat-card-content categoriesOfBook="categoriesOfBook" *ngFor="let cat of categoriesOfBook">{{cat.categoryName}}</mat-card-content>
     </mat-card>
 </ng-form>
 
