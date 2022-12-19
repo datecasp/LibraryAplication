@@ -6,7 +6,6 @@ import { BookService } from '../_services/book.service';
 import { CategoryService } from '../_services/category.service';
 import { BookCategoryService } from '../_services/bookCategory.service';
 import { Book } from '../_models/Book';
-import { BookCategory } from '../_models/BookCategory';
 import { BookCategoryDto } from '../_models/BookCategoryDto';
 
 @Component({
@@ -18,7 +17,7 @@ export class AddCategoryToBookComponent implements OnInit {
   categories: Category[] = [{ id: 1, categoryName: "una" }, { id: 2, categoryName: "dos" }];
   bookIdList: number[] = [];
   public categoryId: number = -11;
-  bookCategory: BookCategoryDto = { bookId: 0, categoryId: 0 }
+  bookCategoryDto: BookCategoryDto = { bookId: 0, categoryId: 0 }
 
   @Input() book: Book = {id: -99, title: "qqqqqqqqq", author: "hijo"};
     value: number = -33;
@@ -39,10 +38,19 @@ constructor(private router: Router,
     });
   }
 
-  public SendBookCategoryToInsert(category: Category) {
-    this.bookCategory.bookId = this.book.id,
-    this.bookCategory.categoryId = category.id;
+  public async SendBookCategoryToInsert(category: Category) {
+    this.bookCategoryDto.bookId = this.book.id,
+    this.bookCategoryDto.categoryId = category.id;
+
+    (await this.bookCategoryService.addBookCategory(this.bookCategoryDto)).subscribe(() => {
+      this.toastr.success('Registration successful');
+      this.router.navigate(['/books']);
+    }, () => {
+      this.toastr.error('An error occurred on insert the record.');
+    });
+    //this.bookCategoryService.addBookCategory(this.bookCategory);
     alert("book: " + this.book.id + "    cat: " + category.id);
-    this.bookCategoryService.addBookCategory(this.bookCategory);
+    //alert(this.bookCategoryService.addBookCategory(this.bookCategoryDto));
+
   }
 }
