@@ -44,13 +44,9 @@ constructor(private router: Router,
 
     (await this.bookCategoryService.addBookCategory(this.bookCategoryDto)).subscribe(() => {
       this.toastr.success('Registration successful');
-      this.router.navigate(['/books']);
     }, () => {
       this.toastr.error('An error occurred on insert the record.');
     });
-    //this.bookCategoryService.addBookCategory(this.bookCategory);
-    alert("book: " + this.book.id + "    cat: " + category.id);
-    //alert(this.bookCategoryService.addBookCategory(this.bookCategoryDto));
-
+    //alert("book: " + this.book.id + "    cat: " + category.id);
   }
 }
