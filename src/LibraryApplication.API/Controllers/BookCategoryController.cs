@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LibraryApplication.API.Dtos.Book;
+using LibraryApplication.API.Dtos.BookCategory;
 using LibraryApplication.API.Dtos.Category;
 using LibraryApplication.Domain.Interfaces;
 using LibraryApplication.Domain.Models;
@@ -21,19 +22,19 @@ namespace LibraryApplication.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("AddCategory/Book/{bookId:int}/categoryId/{categoryId:int}")]
+        [HttpPost("AddCategoryToBook")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddCategoryToBook(int bookId, int categoryId)
+        public async Task<IActionResult> AddCategoryToBook(BookCategoryDto bookCategory)
         {
             if (!ModelState.IsValid) return BadRequest();
 
             
-            var result = await _bookCategoryService.AddCategoryToBook(bookId, categoryId);
+            var result = await _bookCategoryService.AddCategoryToBook(bookCategory.BookId, bookCategory.CategoryId);
 
-            if (!result) return BadRequest($"ERROR. Check CategoryId {categoryId} and BookId {bookId}");
+            if (!result) return BadRequest($"ERROR. Check CategoryId {bookCategory.CategoryId} and BookId {bookCategory.BookId}");
 
-            return Ok($"Category {categoryId} added to book {bookId}");
+            return Ok($"Category {bookCategory.CategoryId} added to book {bookCategory.BookId}");
         }
 
         [HttpDelete("RemoveCategory/Book/{bookId:int}/categoryId/{categoryId:int}")]

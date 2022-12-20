@@ -48,9 +48,9 @@ import { AddCategoryToBookComponent } from './add-category-to-book/add-category-
     FormsModule,
     NgbModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     BookService,
