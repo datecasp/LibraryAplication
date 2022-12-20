@@ -7,6 +7,7 @@ import { CategoryService } from '../_services/category.service';
 import { BookCategoryService } from '../_services/bookCategory.service';
 import { Book } from '../_models/Book';
 import { BookCategoryDto } from '../_models/BookCategoryDto';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-add-category-to-book',
@@ -20,6 +21,7 @@ export class AddCategoryToBookComponent implements OnInit {
   public categoriesOfBook: Category[] = [{ id: 1, categoryName: "una" }, { id: 2, categoryName: "dos" }];
   bookCategoryDto: BookCategoryDto = { bookId: 0, categoryId: 0 };
   public listCategories: string = "";
+  public searchValueChanged: Subject<number> = new Subject<number>();
 
   @Input() book: Book = {id: -99, title: "qqqqqqqqq", author: "hijo"};
     value: number = -33;
@@ -35,21 +37,32 @@ constructor(private router: Router,
 
     this.categoryService.getCategories().subscribe(categories => {
       this.categories = categories;
-      this.UpdateCategoriesList();
     }, err => {
       this.toastr.error('An error occurred on get the records.');
     });
 
+    this.bookCategoryService.searchCategoriesOfBook(this.book.id).subscribe(categoriesOfBook => {
+      this.categoriesOfBook = categoriesOfBook;
+    }, err => {
+      this.toastr.error('An error occurred on get the records.');
+    });
+
+    this.searchValueChanged.pipe(debounceTime(1000))
+      .subscribe(() => {
+        this.search();
+      });
+
+    this.UpdateCategoriesList();
   }
 
   private async UpdateCategoriesList() {
-    (await this.bookCategoryService.searchCategoriesOfBook(this.book.id)).subscribe(categories => {
-        this.categoriesOfBook = categories;
-      
-    console.error(this.listCategories);
+    this.listCategories = "";
+
+    (await this.bookCategoryService.searchCategoriesOfBook(this.book.id)).subscribe(categoriesOfBook => {
+        this.categoriesOfBook = categoriesOfBook;
     });
-        for (let cat of this.categoriesOfBook) {
-          this.listCategories.concat(cat.categoryName + "ñññññññññññññññññññññ");
+    for (let cat of this.categoriesOfBook) {
+      this.listCategories = this.listCategories.concat(cat.categoryName + ", ");
         }
   }
 
@@ -66,5 +79,19 @@ constructor(private router: Router,
       this.toastr.error('An error occurred on insert the record.');
       this.UpdateCategoriesList();
     });
+  }
+
+  private search() {
+    if (this.book.id !== -1) {
+      this.bookCategoryService.searchCategoriesOfBook(this.book.id).subscribe(book => {
+        this.categories = book;
+      }, error => {
+        this.categories = [];
+      });
+    } else {
+      this.categoryService.getCategories().subscribe(cats => this.categories = cats);
+    }
+    this.UpdateCategoriesList();
+
   }
 }
