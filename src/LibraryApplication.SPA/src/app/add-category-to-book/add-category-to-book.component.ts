@@ -19,7 +19,7 @@ export class AddCategoryToBookComponent implements OnInit {
   public categoryId: number = -11;
   public categoriesOfBook: Category[] = [{ id: 1, categoryName: "una" }, { id: 2, categoryName: "dos" }];
   bookCategoryDto: BookCategoryDto = { bookId: 0, categoryId: 0 };
-  listCategories: string = "";
+  public listCategories: string = "";
 
   @Input() book: Book = {id: -99, title: "qqqqqqqqq", author: "hijo"};
     value: number = -33;
@@ -43,16 +43,14 @@ constructor(private router: Router,
   }
 
   private async UpdateCategoriesList() {
-    (await this.bookCategoryService.searchCategoriesOfBook(this.book.id)).subscribe(category => {
-      for (let i = 0; i < category.length; i++) {
-        this.categoriesOfBook = category;
-      }
+    (await this.bookCategoryService.searchCategoriesOfBook(this.book.id)).subscribe(categories => {
+        this.categoriesOfBook = categories;
+      
+    console.error(this.listCategories);
     });
-    for (let cat of this.categoriesOfBook) {
-      this.listCategories.concat(cat.categoryName);
-    }
-    this.toastr.error(this.listCategories + "my error");
-    console.log(this.listCategories);
+        for (let cat of this.categoriesOfBook) {
+          this.listCategories.concat(cat.categoryName + "ñññññññññññññññññññññ");
+        }
   }
 
   
@@ -63,9 +61,10 @@ constructor(private router: Router,
 
     (await this.bookCategoryService.addBookCategory(this.bookCategoryDto)).subscribe(() => {
       this.toastr.success('Registration successful');
+      this.UpdateCategoriesList();
     }, () => {
       this.toastr.error('An error occurred on insert the record.');
+      this.UpdateCategoriesList();
     });
-    this.UpdateCategoriesList();
   }
 }
