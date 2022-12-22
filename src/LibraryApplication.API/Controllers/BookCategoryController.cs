@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LibraryApplication.API.Dtos.Book;
+using LibraryApplication.API.Dtos.BookCategory;
 using LibraryApplication.API.Dtos.Category;
 using LibraryApplication.Domain.Interfaces;
 using LibraryApplication.Domain.Models;
@@ -8,7 +9,7 @@ using static System.Reflection.Metadata.BlobBuilder;
 
 namespace LibraryApplication.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     public class BookCategoryController : MainController
     {
         private readonly IBookCategoryService _bookCategoryService;
@@ -21,19 +22,19 @@ namespace LibraryApplication.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("AddCategory/Book/{bookId:int}/categoryId/{categoryId:int}")]
+        [HttpPost("Books/AddCategoryToBook")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddCategoryToBook(int bookId, int categoryId)
+        public async Task<IActionResult> AddCategoryToBook(BookCategoryasicDto bookCategoryDto)
         {
             if (!ModelState.IsValid) return BadRequest();
 
             
-            var result = await _bookCategoryService.AddCategoryToBook(bookId, categoryId);
+            var result = await _bookCategoryService.AddCategoryToBook(bookCategoryDto.BookId, bookCategoryDto.CategoryId);
 
-            if (!result) return BadRequest($"ERROR. Check CategoryId {categoryId} and BookId {bookId}");
+            if (!result) return BadRequest($"ERROR. Check CategoryId {bookCategoryDto.CategoryId} and BookId {bookCategoryDto.BookId}");
 
-            return Ok($"Category {categoryId} added to book {bookId}");
+            return Ok($"Category {bookCategoryDto.CategoryId} added to book {bookCategoryDto.BookId}");
         }
 
         [HttpDelete("RemoveCategory/Book/{bookId:int}/categoryId/{categoryId:int}")]
@@ -64,7 +65,7 @@ namespace LibraryApplication.API.Controllers
             return Ok(_mapper.Map<IEnumerable<BookResultDto>>(result));
         }
 
-        [HttpGet("CategoriesOfBook/BookId/{bookId:int}")]
+        [HttpGet("Books/CategoriesOfBook/BookId/{bookId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FindCategoriesOfBook(int bookId)

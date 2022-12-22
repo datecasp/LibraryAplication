@@ -44,7 +44,8 @@ export class UserComponent implements OnInit {
 
     this.formData = {
       id: 0,
-      userName: ''
+      userName: '',
+      isActive: true
     };
   }
 
