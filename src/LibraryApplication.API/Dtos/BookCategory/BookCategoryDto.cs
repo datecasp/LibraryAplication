@@ -1,11 +1,8 @@
 ﻿namespace LibraryApplication.API.Dtos.BookCategory
 {
-    public class BookCategoryDto
+    public class BookCategoryasicDto
     {
-        public int Id { get; set; }
-
-        public string BookId { get; set; }
-
-        public string CategoryId { get; set; }
+        public int BookId { get; set; }
+        public int CategoryId { get; set; }
     }
 }

@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { User } from '../../_models/User';
 
 @Component({
   selector: 'app-user-list',
@@ -22,7 +23,7 @@ export class UserListComponent implements OnInit {
     private confirmationDialogService: ConfirmationDialogService) { }
 
   ngOnInit(): void {
-    this.getCategories();
+    this.getUsers();
 
     this.searchValueChanged.pipe(debounceTime(1000))
       .subscribe(() => {
@@ -30,7 +31,7 @@ export class UserListComponent implements OnInit {
       });
   }
 
-  private getCategories() {
+  private getUsers() {
     this.service.getUsers().subscribe(users => {
       this.users = users;
     });
@@ -49,7 +50,7 @@ export class UserListComponent implements OnInit {
       .then(() =>
         this.service.deleteUser(userId).subscribe(() => {
           this.toastr.success('The user has been deleted');
-          this.getCategories();
+          this.getUsers();
         },
           error => {
             this.toastr.error('Failed to delete the user.');
