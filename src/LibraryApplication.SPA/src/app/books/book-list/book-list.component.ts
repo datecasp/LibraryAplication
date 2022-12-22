@@ -5,8 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { BookCategoryService } from '../../_services/bookCategory.service';
-import { BookCategory } from '../../_models/BookCategory';
 import { Book } from '../../_models/Book';
 
 
