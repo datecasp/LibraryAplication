@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
-
+import { MatGridListModule } from '@angular/material/grid-list';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -52,6 +52,7 @@ import { AddCategoryToBookComponent } from './add-category-to-book/add-category-
     MatFormFieldModule,
     MatSelectModule,
     MatCardModule,
+    MatGridListModule,
     ToastrModule.forRoot()
   ],
   providers: [

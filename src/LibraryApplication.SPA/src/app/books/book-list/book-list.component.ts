@@ -17,7 +17,6 @@ import { Book } from '../../_models/Book';
 })
 export class BookListComponent implements OnInit {
   public books: Book[] = [{ id: -111, title: "hjhjhjhjh", author: "sddfefef" }];
-  public listComplet: any;
   public book: Book = { id: -55, title: "ddddddd", author: "ñlkdñokñokñl" };
   public searchTerm: string ="";
   public searchValueChanged: Subject<string> = new Subject<string>();
@@ -40,7 +39,6 @@ export class BookListComponent implements OnInit {
 
     this.boookService.getBooks().subscribe(books => {
       this.books = books;
-      this.listComplet = books;
     });
   }
 

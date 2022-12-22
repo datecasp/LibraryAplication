@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Category } from '../_models/Category';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { BookService } from '../_services/book.service';
 import { CategoryService } from '../_services/category.service';
 import { BookCategoryService } from '../_services/bookCategory.service';
 import { Book } from '../_models/Book';
@@ -24,14 +23,13 @@ export class AddCategoryToBookComponent implements OnInit {
   public searchValueChanged: Subject<number> = new Subject<number>();
 
   @Input() book: Book = {id: -99, title: "qqqqqqqqq", author: "hijo"};
-    value: number = -33;
 
 
 
-constructor(private router: Router,
-  private categoryService: CategoryService,
-  private bookCategoryService: BookCategoryService,
-  private toastr: ToastrService) { }
+  constructor(private router: Router,
+    private categoryService: CategoryService,
+    private bookCategoryService: BookCategoryService,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
 
@@ -41,28 +39,17 @@ constructor(private router: Router,
       this.toastr.error('An error occurred on get the records.');
     });
 
-    this.bookCategoryService.searchCategoriesOfBook(this.book.id).subscribe(categoriesOfBook => {
-      this.categoriesOfBook = categoriesOfBook;
-    }, err => {
-      this.toastr.error('An error occurred on get the records.');
-    });
-
-    this.searchValueChanged.pipe(debounceTime(1000))
-      .subscribe(() => {
-        this.search();
-      });
-
     this.UpdateCategoriesList();
   }
 
   private async UpdateCategoriesList() {
     this.listCategories = "";
-
-    (await this.bookCategoryService.searchCategoriesOfBook(this.book.id)).subscribe(categoriesOfBook => {
-        this.categoriesOfBook = categoriesOfBook;
+    (await this.bookCategoryService.searchCategoriesOfBook(this.book.id)).subscribe(categories => {
+        this.categoriesOfBook = categories;
+        this.UpdateCategoriesList();
     });
     for (let cat of this.categoriesOfBook) {
-      this.listCategories = this.listCategories.concat(cat.categoryName + ", ");
+      this.listCategories = this.listCategories.concat(cat.categoryName + "   ");
         }
   }
 
