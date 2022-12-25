@@ -53,7 +53,7 @@ namespace LibraryApplication.Domain.Services
             foreach (BookUser bookUser in bookUserList)
             {
                 bookUser.ActualUser = false;
-                _bookUserRepository.RemoveActualUserFromBook(bookUser);
+                await _bookUserRepository.RemoveActualUserFromBook(bookUser);
             }
             return true;
         }

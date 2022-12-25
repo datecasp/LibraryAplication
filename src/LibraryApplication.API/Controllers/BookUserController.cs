@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LibraryApplication.API.Dtos.Book;
+using LibraryApplication.API.Dtos.BookUser;
 using LibraryApplication.API.Dtos.Category;
 using LibraryApplication.API.Dtos.User;
 using LibraryApplication.Domain.Interfaces;
@@ -10,7 +11,7 @@ using System.Net;
 
 namespace LibraryApplication.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
 
     public class BookUserController : MainController
     {
@@ -24,32 +25,32 @@ namespace LibraryApplication.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("UserGetsBook/Book/{bookId:int}/userId/{userId:int}")]
+        [HttpPost("UserGetsBook")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddActualUserToBook(int bookId, int userId)
+        public async Task<IActionResult> AddActualUserToBook(BookUserDto bookUserDto)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var result = await _bookUserService.AddActualUserToBook(bookId, userId);
+            var result = await _bookUserService.AddActualUserToBook(bookUserDto.BookId, bookUserDto.UserId);
 
-            if (!result) return BadRequest($"ERROR. Check CategoryId {userId} and BookId {bookId}");
+            if (!result) return BadRequest($"ERROR. Check UserId {bookUserDto.UserId} and BookId {bookUserDto.BookId}");
 
-            return Ok($"User {userId} gets book {bookId}");
+            return Ok($"User {bookUserDto.UserId} gets book {bookUserDto.BookId}");
         }
 
-        [HttpDelete("UserReturnsBook/Book/{bookId:int}/userId/{userId:int}")]
+        [HttpPut("UserReturnsBook")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RemoveActualUserFromBook(int bookId, int userId)
+        public async Task<IActionResult> RemoveActualUserFromBook(BookUserDto bookUserDto)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var result = await _bookUserService.RemoveActualUserFromBook(bookId, userId);
+            var result = await _bookUserService.RemoveActualUserFromBook(bookUserDto.BookId, bookUserDto.UserId);
 
-            if (!result) return BadRequest($"ERROR. Check CategoryId {userId} and BookId {bookId}");
+            if (!result) return BadRequest($"ERROR. Check UserId {bookUserDto.UserId} and BookId {bookUserDto.BookId}");
 
-            return Ok($"User {userId} returns book {bookId}");
+            return Ok($"User {bookUserDto.UserId} returns book {bookUserDto.BookId}");
         }
 
         [HttpGet("BooksOfUser/userId/{userId:int}")]
@@ -70,7 +71,7 @@ namespace LibraryApplication.API.Controllers
             return Ok(_mapper.Map<IEnumerable<BookResultDto>>(result));
         }
 
-        [HttpGet("UsersOfBook/BookId/{bookId:int}")]
+        [HttpGet("Books/UsersOfBook/BookId/{bookId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FindUsersOfBook(int bookId, bool actualUser = true)
@@ -87,6 +88,23 @@ namespace LibraryApplication.API.Controllers
             }
             
             return Ok(_mapper.Map<IEnumerable<UserResultDto>>(result));
+        }
+
+        [HttpGet("Books/AvailabilityOfBook/BookId/{bookId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<bool> FindAvailabilityOfBook(int bookId)
+        {
+            if (!ModelState.IsValid) return false;
+
+            var result = await _bookUserService.FindUsersOfBook(bookId, true);
+
+            if (!result.Any())
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
