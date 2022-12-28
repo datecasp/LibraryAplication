@@ -71,7 +71,7 @@ namespace LibraryApplication.API.Controllers
             return Ok(_mapper.Map<IEnumerable<BookResultDto>>(result));
         }
 
-        [HttpGet("Books/UsersOfBook/BookId/{bookId:int}")]
+        [HttpGet("UsersOfBook/BookId/{bookId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FindUsersOfBook(int bookId, bool actualUser = true)
@@ -90,7 +90,7 @@ namespace LibraryApplication.API.Controllers
             return Ok(_mapper.Map<IEnumerable<UserResultDto>>(result));
         }
 
-        [HttpGet("Books/AvailabilityOfBook/BookId/{bookId:int}")]
+        [HttpGet("AvailabilityOfBook/BookId/{bookId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<bool> FindAvailabilityOfBook(int bookId)
