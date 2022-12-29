@@ -12,11 +12,13 @@ namespace LibraryApplication.Domain.Services
     {
         private readonly IBookUserRepository _bookUserRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IBookRepository _bookRepository;
 
-        public BookUserService(IBookUserRepository bookUserRepository, IUserRepository userRepository)
+        public BookUserService(IBookUserRepository bookUserRepository, IUserRepository userRepository, IBookRepository bookRepository)
         {
             _bookUserRepository = bookUserRepository;
             _userRepository = userRepository;
+            _bookRepository = bookRepository;
         }
 
         public async Task<bool> AddActualUserToBook(int bookId, int userId)
@@ -51,9 +53,39 @@ namespace LibraryApplication.Domain.Services
             foreach (BookUser bookUser in bookUserList)
             {
                 bookUser.ActualUser = false;
-                _bookUserRepository.RemoveActualUserFromBook(bookUser);
+                await _bookUserRepository.RemoveActualUserFromBook(bookUser);
             }
             return true;
+        }
+
+        public async Task<IEnumerable<Book>> FindBooksOfUser(int userId, bool actualBooks)
+        {
+            var booksIdList = await _bookUserRepository.GetBooksIdOfUser(userId, actualBooks);
+            var bookList = new List<Book>();
+            if (booksIdList.Any())
+            {
+                foreach (var bookId in booksIdList)
+                {
+                    Book tempBook = await _bookRepository.GetById(bookId);
+                    bookList.Add(tempBook);
+                }
+            }
+            return bookList;
+        }
+
+        public async Task<IEnumerable<User>> FindUsersOfBook(int bookId, bool actualUser)
+        {
+            var usersIdList = await _bookUserRepository.GetUsersIdOfBook(bookId, actualUser);
+            var usersList = new List<User>();
+            if (usersIdList.Any())
+            {
+                foreach (var userId in usersIdList)
+                {
+                    User tempUser = await _userRepository.GetById(userId);
+                    usersList.Add(tempUser);
+                }
+            }
+            return usersList;
         }
     }
 }

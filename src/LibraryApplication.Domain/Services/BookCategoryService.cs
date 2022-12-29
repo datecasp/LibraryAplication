@@ -57,5 +57,35 @@ namespace LibraryApplication.Domain.Services
             }
             return true;
         }
+
+        public async Task<IEnumerable<Book>> FindBooksWithCategory(int categoryId)
+        {
+            var booksIdList = await _bookCategoryRepository.GetBooksIdWithCategory(categoryId);
+            var bookList = new List<Book>();
+            if (booksIdList.Any())
+            {
+                foreach (var bookId in booksIdList)
+                {
+                    Book tempBook = await _bookRepository.GetById(bookId);
+                    bookList.Add(tempBook);
+                }
+            }
+            return bookList;
+        }
+
+        public async Task<IEnumerable<Category>> FindCategoriesOfBook(int bookId)
+        {
+            var catsIdList = await _bookCategoryRepository.GetCategoriesIdOfBook(bookId);
+            var catsList = new List<Category>();
+            if (catsIdList.Any())
+            {
+                foreach (var categoryId in catsIdList)
+                {
+                    Category tempCat = await _categoryRepository.GetById(categoryId);
+                    catsList.Add(tempCat);
+                }
+            }
+            return catsList;
+        }
     }
 }

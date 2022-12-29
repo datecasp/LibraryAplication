@@ -2,12 +2,8 @@
 {
     public class BookUserDto
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
-        public string BookId { get; set; }
-
-        public string UserId { get; set; }
-
-        public bool ActualUser { get; set; }   
+        public int BookId { get; set; }
     }
 }

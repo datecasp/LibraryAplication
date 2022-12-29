@@ -13,5 +13,8 @@ namespace LibraryApplication.Domain.Interfaces
 
         Task<bool> DeleteCategoryFromBook(int bookId, int categoryId);
 
+        Task<IEnumerable<Book>> FindBooksWithCategory(int categoryId);
+
+        Task<IEnumerable<Category>> FindCategoriesOfBook(int bookId);
     }
 }
