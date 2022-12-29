@@ -19,6 +19,7 @@ namespace LibraryApplication.API.Configuration
             CreateMap<User, UserAddDto>().ReverseMap();
             CreateMap<User, UserEditDto>().ReverseMap();
             CreateMap<User, UserResultDto>().ReverseMap();
+            CreateMap<User, UserAvailabilityDto>().ReverseMap();
         }
     }
 }

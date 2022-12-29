@@ -37,18 +37,18 @@ namespace LibraryApplication.API.Controllers
             return Ok($"Category {bookCategoryDto.CategoryId} added to book {bookCategoryDto.BookId}");
         }
 
-        [HttpDelete("RemoveCategory/Book/{bookId:int}/categoryId/{categoryId:int}")]
+        [HttpDelete("Books/RemoveCategoryFromBook")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DeleteCategoryFromBook(int bookId, int categoryId) 
+        public async Task<IActionResult> DeleteCategoryFromBook(BookCategoryasicDto bookCategoryDto) 
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var result = await _bookCategoryService.DeleteCategoryFromBook(bookId, categoryId);
+            var result = await _bookCategoryService.DeleteCategoryFromBook(bookCategoryDto.BookId, bookCategoryDto.CategoryId);
 
-            if (!result) return BadRequest($"ERROR. Check CategoryId {categoryId} and BookId {bookId}");
+            if (!result) return BadRequest($"ERROR. Check CategoryId {bookCategoryDto.CategoryId} and BookId {bookCategoryDto.BookId}");
 
-            return Ok($"Category {categoryId} removed from book {bookId}");
+            return Ok($"Category {bookCategoryDto.CategoryId} removed from book {bookCategoryDto.BookId}");
         }
 
         [HttpGet("BooksWithCategory/categoryId/{categoryId:int}")]

@@ -25,8 +25,8 @@ namespace LibraryApplication.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var users = await _userService.GetAll();
-
-            return Ok(_mapper.Map<IEnumerable<UserResultDto>>(users));
+            
+            return Ok(_mapper.Map<IEnumerable<UserAvailabilityDto>>(users));
         }
 
         [HttpGet("{id:int}")]
@@ -38,7 +38,7 @@ namespace LibraryApplication.API.Controllers
 
             if (user == null) return NotFound();
 
-            return Ok(_mapper.Map<UserResultDto>(user));
+            return Ok(_mapper.Map<UserAvailabilityDto>(user));
         }
 
         [HttpPost]
@@ -59,13 +59,37 @@ namespace LibraryApplication.API.Controllers
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(int id, UserEditDto userDto)
+        public async Task<IActionResult> Update(int id, User user)
         {
-            if (id != userDto.Id) return BadRequest();
+            if (id != user.Id) return BadRequest();
 
             if (!ModelState.IsValid) return BadRequest();
 
-            bool result = await _userService.Update(_mapper.Map<User>(userDto));
+            bool result = await _userService.Update(user);
+
+            if (result)
+            {
+                return Ok($"User {id} updated.");
+            }
+
+            return BadRequest();
+        }
+
+
+        [HttpPut("userAvailability/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateUserAvailability(int id, User user)
+        {
+            if (user == null) return NotFound();
+            
+            if (id != user.Id) return BadRequest();
+
+            if (!ModelState.IsValid) return BadRequest();
+
+            user.IsActive = !user.IsActive;
+
+            bool result = await _userService.Update(user);
 
             if (result)
             {
