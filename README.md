@@ -13,7 +13,7 @@ Following principles of abstraction and security, there are three layers
 or levels separated in three Visual Studio independent projects.
 * API -> The outter layer. Manages the endpoints and the data flow
          betwen the backend and the frontend.
-* Domain -> The midlle layer. It holds the logic and models. Comunicates the outter and the inner layers
+* Domain -> The middle layer. It holds the logic and models. Comunicates the outter and the inner layers
 * Infrastructure -> The inner layer. It has the repositories and configurations to manage the server communication.
 # Data structure
 There are three main entities in the context. 
@@ -34,7 +34,7 @@ https://github.com/datecasp/LibraryAplication/blob/development/src/images/book.p
 The frontend project is here: 
 https://github.com/datecasp/LibraryApplication.FrontEnd
 
-It´s developed in Visual Studio and Angular-cli project using typescript, HTML and CSS.
+ItÂ´s developed in Visual Studio and Angular-cli project using typescript, HTML and CSS.
 
 # TODO 
 * Add security with login
