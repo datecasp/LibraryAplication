@@ -26,6 +26,10 @@ And two extra entities for N to M relation betwen the main entities
 And a book can have many users (one actual user and many past users, I used a flag for this difference)
 * BookCategory -> A book has many categories and a category can be in many books.
 
+# Images
+https://github.com/datecasp/LibraryAplication/blob/development/src/images/swagger-api.png
+
+https://github.com/datecasp/LibraryAplication/blob/development/src/images/book.png
 # Frontend
 The frontend project is here: 
 https://github.com/datecasp/LibraryApplication.FrontEnd
